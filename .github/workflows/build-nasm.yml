@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     name: Create Release
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     env:
       nasmTargetZip: nasm-linux-playground-${{ github.ref_name }}-nasm.zip
     steps:
