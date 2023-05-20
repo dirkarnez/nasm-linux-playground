@@ -29,11 +29,11 @@ jobs:
         uses: thedoctor0/zip-release@master
         with:
           type: 'zip'
-          filename: "${{ env.nasmTargetName }}-$(nasm -version).zip"
+          filename: ${{ env.nasmTargetName }}-$(nasm -version).zip
           
       - name: Release prebuilt
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "${{ env.nasmTargetZip }}-$(nasm -version).zip"
+          artifacts: ${{ env.nasmTargetName }}-$(nasm -version).zip
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
