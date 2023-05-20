@@ -1,0 +1,39 @@
+name: nasm-prebuilt-release-actions-workflow
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+      - 'c*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+jobs:
+  build:
+    name: Create Release
+    runs-on: windows-latest
+    env:
+      nasmTargetZip: nasm-linux-playground-${{ github.ref_name }}-nasm.zip
+    steps:
+      - uses: actions/checkout@v3
+      
+      - run: |
+          sudo apt-get install nasm && \
+          nasm -version
+        
+      - run: |
+          cd helloworld && \
+          nasm -f elf64 -o main.o main.asm && \
+          ld -o main main.o && \
+          ./main
+        
+      - name: Archive Release
+        uses: thedoctor0/zip-release@master
+        with:
+          type: 'zip'
+          filename: "${{ env.nasmTargetZip }}"
+          
+      - name: Release prebuilt
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "${{ env.nasmTargetZip }}"
+          allowUpdates: true
+          token: ${{ secrets.GITHUB_TOKEN }}
