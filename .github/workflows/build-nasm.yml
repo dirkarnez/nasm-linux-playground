@@ -11,7 +11,7 @@ jobs:
     name: Create Release
     runs-on: ubuntu-latest
     env:
-      nasmTargetName: nasm-linux-playground-${{ github.ref_name }}
+      nasmTargetZip: nasm-linux-playground-${{ github.ref_name }}-nasm-2.15.05.zip
     steps:
       - uses: actions/checkout@v3
       
@@ -29,11 +29,11 @@ jobs:
         uses: thedoctor0/zip-release@master
         with:
           type: 'zip'
-          filename: ${{ env.nasmTargetName }}-$(nasm -version).zip
+          filename: ${{ env.nasmTargetZip }}
           
       - name: Release prebuilt
         uses: ncipollo/release-action@v1
         with:
-          artifacts: ${{ env.nasmTargetName }}-$(nasm -version).zip
+          artifacts: ${{ env.nasmTargetZip }}
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
